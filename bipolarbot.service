@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=kkodiyan
 WorkingDirectory=/home/kkodiyan/bipolarbot
-ExecStart=/usr/bin/python3 server.py
+ExecStart=/usr/bin/python3 app/server.py
 Restart=always
 
 [Install]
