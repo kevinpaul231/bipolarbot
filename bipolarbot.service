@@ -3,9 +3,9 @@ Description=Bipolarbot either insults or compliments you with a 50/50 chance whe
 After=network.target
 
 [Service]
-User=kkodiyan
-WorkingDirectory=/home/kkodiyan/bipolarbot
-ExecStart=/usr/bin/python3 app/server.py
+User=bipolarbot
+WorkingDirectory=/bipolarbot/app
+ExecStart=/usr/bin/python3 server.py
 Restart=always
 
 [Install]

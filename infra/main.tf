@@ -1,14 +1,15 @@
  
 provider "google" {
- credentials = file("test-123-292706-09d49006a885.json")
- project     = "test-123-292706"
- region      = "us-central1"
+ credentials = file(var.cred)
+ project     = var.instance["project"]
+ region      = var.instance_location["region"]
 }
 
 resource "google_compute_instance" "default" {
-	name = "bipolarbot-test-191020"
-	machine_type = "e2-small"
-	zone = "us-central1-a"
+	for_each = toset(["1","2"])
+	name = "${var.instance["name"]}-${each.key}"
+	machine_type = var.instance["type"]
+	zone = var.instance_location["zone"]
 
 	boot_disk {
 		initialize_params {
@@ -23,7 +24,11 @@ resource "google_compute_instance" "default" {
 		}
 	}
 	metadata = {
-		ssh-keys = "kkodiyan:${file("~/.ssh/id_rsa.pub")}"
+		ssh-keys = "${var.ssh_key_pub["user"]}:${file(var.ssh_key_pub["key"])}"
+	}
+
+	provisioner "remote-exec" {
+		script = "../prep.sh"
 	}
 
 }
@@ -34,6 +39,6 @@ resource "google_compute_firewall" "default" {
 	
 	allow {
 		protocol = "tcp"
-		ports = ["6666"]
+		ports = ["8000"]
 	}
 }
