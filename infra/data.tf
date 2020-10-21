@@ -1,5 +1,5 @@
 data "template_file" "script" {
-  template = "${file("../prep.sh")}"
+  template = file("../prep.sh")
 }
 
 data "template_cloudinit_config" "cloudinit" {
@@ -8,7 +8,7 @@ data "template_cloudinit_config" "cloudinit" {
 
   part {
     content_type = "text/x-shellscript"
-    content      = "${data.template_file.script.rendered}"
+    content      = data.template_file.script.rendered
   }
 }
 
