@@ -4,7 +4,7 @@ data "template_file" "script" {
 
 data "template_cloudinit_config" "cloudinit" {
   gzip          = false
-  base64_encode = true
+  base64_encode = false
 
   part {
     content_type = "text/x-shellscript"
