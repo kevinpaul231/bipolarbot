@@ -1,4 +1,6 @@
- provider "google" {
+# Uses remote-exec  to provison
+# Even after script is executed fully and successfully, tf doesn't exit/create vm successfully 
+provider "google" {
  credentials = file(var.cred)
  project     = var.instance["project"]
  region      = var.instance_location["region"]
@@ -25,7 +27,6 @@ resource "google_compute_instance" "default" {
 	}
 	metadata = {
 		ssh-keys = "${var.ssh_key_pub["user"]}:${file(var.ssh_key_pub["key"])}"
-		user-data = "${data.template_cloudinit_config.cloudinit.rendered}"
 	}
 
 	connection {

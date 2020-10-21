@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+
+set -xe
+
 sudo apt-get update
 sudo apt-get -y install build-essential python3-pip
 cd /
