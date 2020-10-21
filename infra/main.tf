@@ -29,6 +29,13 @@ resource "google_compute_instance" "default" {
 
 	provisioner "remote-exec" {
 		script = "../prep.sh"
+
+		connection {
+			#TODO Move private key and user details to var.tf, call it here
+			host = "self.network_interface[0].access_config[0].nat_ip"
+			user = var.ssh_key_pub["user"]
+			private_key = file("~/.ssh/id_rsa")	
+		}
 	}
 
 }
@@ -39,6 +46,6 @@ resource "google_compute_firewall" "default" {
 	
 	allow {
 		protocol = "tcp"
-		ports = ["8000"]
+		ports = ["22","8000"]
 	}
 }
