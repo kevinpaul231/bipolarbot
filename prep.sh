@@ -10,4 +10,4 @@ sudo chown -R bipolarbot:bipolarbot app
 sudo cp bipolarbot.service /etc/systemd/system
 sudo systemctl daemon-reload
 sudo systemctl restart bipolarbot
-sudo sytemctl status bipolarbot
+sudo systemctl status bipolarbot
