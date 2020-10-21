@@ -38,3 +38,10 @@ resource "google_compute_firewall" "default" {
 	}
 	source_ranges = ["0.0.0.0/0"]
 }
+
+output "ip" {
+	value = [
+		for instance in google_compute_instance.default:
+			instance.network_interface.0.access_config.0.nat_ip
+	]
+}
