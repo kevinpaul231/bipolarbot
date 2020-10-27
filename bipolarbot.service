@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=bipolarbot
 WorkingDirectory=/bipolarbot/app
-ExecStart=/usr/bin/python3 server.py
+ExecStart=/bipolarbot/.venv/bin/python3 server.py
 Restart=always
 
 [Install]

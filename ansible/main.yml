@@ -1,0 +1,50 @@
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install some packages
+      apt:
+        update_cache: yes
+        pkg:
+        - build-essential
+        - python3-pip
+        - python3-venv
+        state: present
+
+    - name: Pull bipolarbot repo
+      git:
+        repo: 'https://github.com/kevinpaul231/bipolarbot.git'
+        dest: /bipolarbot
+
+    - name: Create virtual env and install requirements
+      pip:
+        requirements: /bipolarbot/app/requirements.txt
+        virtualenv: /bipolarbot/.venv
+        virtualenv_command: /usr/bin/python3 -m venv
+
+    - name: Add bipolarbot user
+      user:
+        name: bipolarbot
+        create_home: no
+        state: present
+
+    - name: Change ownership of app
+      file:
+        path: /bipolarbot/app
+        state: directory
+        recurse: yes
+        owner: bipolarbot
+        group: bipolarbot
+
+    - name: Copy bipolarbot.service
+      copy:
+        src: /bipolarbot/bipolarbot.service
+        dest: /etc/systemd/system
+        remote_src: yes
+        owner: root
+
+    - name: Start bipolarbot service
+      systemd:
+        daemon_reload: yes
+        name: bipolarbot
+        state: restarted
+        enabled: yes

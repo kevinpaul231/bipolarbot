@@ -24,7 +24,6 @@ resource "google_compute_instance" "default" {
 	}
 	metadata = {
 		ssh-keys = "${var.ssh_key_pub["user"]}:${file(var.ssh_key_pub["key"])}"
-		user-data = data.template_cloudinit_config.cloudinit.rendered
 	}
 }
 
