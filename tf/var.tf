@@ -11,6 +11,11 @@ variable "instance" {
 	}
 }
 
+variable "instance_append_list" {
+        type = list
+        default = ["1","2"]
+}
+
 variable "instance_location" {
 	type = map
 	default = {
@@ -27,4 +32,10 @@ variable "ssh_key_pub" {
 	}
 }
 
-
+variable "ansible_ssh_key_pub" {
+        type = map
+        default = {
+                "user" = "ansible"
+                "key" = "../ansible/ansible_key.pub"
+        }
+}

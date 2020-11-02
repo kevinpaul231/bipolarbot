@@ -1,0 +1,8 @@
+[bipolarbot]
+%{ for instance in ips ~}
+${instance.network_interface.0.access_config.0.nat_ip} 
+%{ endfor ~}
+
+[bipolarbot:vars]
+ansible_connection=ssh
+ansible_user=ansible

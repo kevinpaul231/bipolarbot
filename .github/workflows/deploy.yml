@@ -1,0 +1,26 @@
+name: Deploy bipolarbot using ansible
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup
+      run: |
+        sudo apt-get install python3-venv
+        python3 -m venv .venv
+        source .venv/bin/activate
+        pip3 install ansible
+    - name: Run the play
+      uses: dawidd6/action-ansible-playbook@v2
+      with:
+        playbook: main.yml
+        directory: ./ansible/
+        key: ${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}
+      
+

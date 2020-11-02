@@ -5,7 +5,7 @@
 }
 
 resource "google_compute_instance" "default" {
-	for_each = toset(["1","2"])
+	for_each = toset(var.instance_append_list)
 	name = "${var.instance["name"]}-${each.key}"
 	machine_type = var.instance["type"]
 	zone = var.instance_location["zone"]
@@ -23,7 +23,8 @@ resource "google_compute_instance" "default" {
 		}
 	}
 	metadata = {
-		ssh-keys = "${var.ssh_key_pub["user"]}:${file(var.ssh_key_pub["key"])}"
+                #TODO: Find a better way to implement the dirty string below
+		ssh-keys = "${var.ssh_key_pub["user"]}:${file(var.ssh_key_pub["key"])} \n${var.ansible_ssh_key_pub["user"]}:${file(var.ansible_ssh_key_pub["key"])}"
 	}
 }
 
@@ -36,11 +37,4 @@ resource "google_compute_firewall" "default" {
 		ports = ["22","8000"]
 	}
 	source_ranges = ["0.0.0.0/0"]
-}
-
-output "ip" {
-	value = [
-		for instance in google_compute_instance.default:
-			instance.network_interface.0.access_config.0.nat_ip
-	]
 }
